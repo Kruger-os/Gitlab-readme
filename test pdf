@@ -1,0 +1,37 @@
+Oczywiście, oto kompletna instrukcja wraz z tabelą, gotowa do skopiowania do pufa lub bezpośrednio do dokumentu w Confluence:
+
+---
+
+**Konfiguracja i monitorowanie logów w GitLab**
+
+**Cel dokumentacji:**
+Celem tego dokumentu jest przekazanie podstawowych informacji na temat konfiguracji i monitorowania systemu logowania w GitLab. Zrozumienie, jak zarządzać logami, pomoże zespołowi IT w efektywnym monitorowaniu, diagnostyce oraz szybkim rozwiązywaniu problemów.
+
+**Wprowadzenie:**
+GitLab generuje różne rodzaje logów, które są kluczowe dla bezpieczeństwa, monitorowania i diagnozowania systemu. Dzięki właściwej konfiguracji i monitorowaniu logów, można efektywnie analizować działania systemu i szybko reagować na wszelkie nieprawidłowości.
+
+**Najważniejsze logi w GitLab:**
+- GitLab Rails (Aplikacja webowa)
+- NGINX (Serwer webowy)
+- Gitaly (Zarządzanie repozytoriami Git)
+- Sidekiq (Zadania w tle)
+- PostgreSQL (Baza danych)
+- Redis (Cache i sesje)
+
+**Lokalizacje logów i ich zastosowanie:**
+| Usługa         | Ścieżka do logów                                | Opis |
+|----------------|-------------------------------------------------|------|
+| GitLab Rails   | `/var/log/gitlab/gitlab-rails/production.log`   | Zawiera informacje o działaniu aplikacji webowej, w tym błędy aplikacji, zapytania do bazy danych, oraz działania użytkowników. Monitoring tego loga jest kluczowy dla utrzymania wydajności aplikacji i szybkiego reagowania na błędy aplikacyjne. |
+| NGINX Dostęp   | `/var/log/gitlab/nginx/gitlab_access.log`       | Zawiera informacje o wszystkich żądaniach HTTP do serwera, co pomaga analizować ruch sieciowy i zachowanie użytkowników na stronie. |
+| NGINX Błędy    | `/var/log/gitlab/nginx/gitlab_error.log`        | Rejestruje błędy serwera webowego, co jest niezbędne do diagnozowania problemów związanych z dostępem do GitLab. |
+| Gitaly         | `/var/log/gitlab/gitaly/gitaly.log`             | Logi z Gitaly dostarczają informacji o operacjach na repozytoriach Git, co jest kluczowe dla zapewnienia integralności i dostępności danych repozytorium. |
+| Sidekiq        | `/var/log/gitlab/sidekiq/sidekiq.log`           | Zawiera logi dotyczące przetwarzania zadań w tle, takich jak wysyłanie e-maili czy przetwarzanie dużych importów danych. Jest to ważne dla oceny wydajności zadań asynchronicznych. |
+| PostgreSQL     | `/var/log/gitlab/postgresql/postgresql.log`     | Logi z bazy danych zawierają informacje o zapytaniach, błędach bazy danych oraz zagadnieniach wydajności. Monitorowanie tych logów jest kluczowe dla utrzymania stabilności i wydajności bazy danych. |
+| Redis          | `/var/log/gitlab/redis/redis.log`               | Rejestruje działania związane z pamięcią podręczną i sesjami użytkowników, co pomaga w utrzymaniu wydajności i dostępności sesji oraz cache. |
+
+**Podsumowanie:**
+Prawidłowe zarządzanie i monitorowanie logów w GitLab jest kluczowe dla utrzymania stabilności i bezpieczeństwa systemu. Regularne przeglądanie tych logów pozwoli na szybkie wykrywanie i reagowanie na problemy, zapewniając ciągłość działania.
+
+---
+
+Możesz teraz skopiować tę instrukcję i wkleić ją bezpośrednio do Confluence, używając odpowiednich narzędzi formatowania dostępnych w edytorze Confluence.
