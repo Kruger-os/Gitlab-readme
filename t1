@@ -1,0 +1,44 @@
+Oczywiście! Oto pełna instrukcja na temat monitorowania logów Jenkinsa, która może służyć jako przewodnik w Confluence. Instrukcja ta zawiera opisy najważniejszych plików logów, które są niezbędne do efektywnego monitorowania i diagnostyki systemu Jenkins.
+
+---
+
+## Przewodnik monitorowania logów Jenkinsa
+
+### Cel dokumentacji
+Celem tej dokumentacji jest przedstawienie kluczowych plików logów Jenkinsa, które są niezbędne do monitorowania działalności, wydajności oraz bezpieczeństwa systemu Jenkins. Zapewnia to niezbędne informacje, które pomagają w szybkim identyfikowaniu i rozwiązywaniu problemów.
+
+### Wprowadzenie
+Jenkins to potężne narzędzie automatyzacji, które generuje różnorodne logi. Te logi są nieocenionym źródłem informacji o bieżącej działalności, potencjalnych błędach i bezpieczeństwie systemu. Poniżej przedstawiono najważniejsze pliki logów, które warto monitorować w środowisku Jenkinsa.
+
+### Najważniejsze logi w Jenkinsie
+
+#### 1. Logi systemowe Jenkinsa
+- **Ścieżka do logów:** `/var/log/jenkins/jenkins.log`
+- **Opis:** Główny plik logów Jenkinsa, zawierający informacje o działaniach systemowych, błędach i ostrzeżeniach. To pierwsze miejsce, do którego należy się udać w przypadku diagnozowania ogólnych problemów z Jenkinsem.
+
+#### 2. Logi wykonania zadań
+- **Ścieżka do logów:** `jobs/<nazwa_zadania>/builds/lastSuccessfulLog`
+- **Opis:** Zawiera szczegółowe informacje o procesie wykonania zadania, w tym o krokach budowania i ewentualnych błędach. Kluczowe dla zrozumienia procesów buildów i debugowania błędów w zadaniach.
+
+#### 3. Logi dostępu HTTP
+- **Ścieżka do logów:** `/var/log/jenkins/jenkins_access_log.*.txt`
+- **Opis:** Rejestruje wszystkie żądania HTTP wysłane do Jenkinsa, co pomaga w analizie ruchu sieciowego i identyfikacji nieautoryzowanych prób dostępu.
+
+#### 4. Logi agentów Jenkins (niewolników)
+- **Ścieżka do logów:** zależy od konfiguracji agenta
+- **Opis:** Zawiera informacje o działaniach agentów Jenkinsa, w tym o błędach i działaniach wykonanych przez agentów. Istotne dla monitorowania zdalnych lub zewnętrznych operacji wykonawczych.
+
+#### 5. Logi bezpieczeństwa
+- **Ścieżka do logów:** `/var/log/jenkins/security.log`
+- **Opis:** Zawiera zapisy dotyczące bezpieczeństwa, takie jak logowania użytkowników, zmiany uprawnień i próby dostępu do zabezpieczonych zasobów. Kluczowe dla utrzymania integralności i bezpieczeństwa systemu.
+
+#### 6. Logi wtyczek
+- **Ścieżka do logów:** różni się w zależności od wtyczki
+- **Opis:** Specyficzne logi dla poszczególnych wtyczek używanych w Jenkinsie. Te logi mogą dostarczać szczegółowych informacji o konkretnych funkcjonalnościach lub problemach związanych z wtyczkami.
+
+### Podsumowanie
+Efektywne monitorowanie wymienionych logów Jenkinsa jest kluczowe dla utrzymania stabilności, wydajności oraz bezpieczeństwa systemu. Korzystając z narzędzi takich jak Filebeat, można automatyzować proces zbierania i analizy tych logów, co znacznie ułatwia zarządzanie infrastrukturą CI/CD.
+
+---
+
+Tę instrukcję można umieścić w Confluence, używając standardowych narzędzi edytora
