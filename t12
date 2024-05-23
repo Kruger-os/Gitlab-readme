@@ -1,0 +1,46 @@
+       stage('Create jira insight object') {
+            when {
+                allOf {
+                    expression { return GITLAB_OBJECT_KIND == 'push' }
+                    expression { return GITLAB_REF == 'refs/heads/master' }
+                    expression { return GITLAB_AFTER != '0000000000000000000000000000000000000000' }
+                }
+            }
+            steps {
+                script {
+                    // Wyciągniecie ostatniej wersji runnera w statusie EKSPLOATOWANY
+                    Map runnersFromInsightArgs = [
+                        jiraApiToken: "vault_jira_multicloud_user_password",
+                        type: "${RUNNER_TYPE}",
+                        status: InsightRunnerStatus.EXPLOITED
+                    ]
+                    def runnersFromInsight = jira.getRunnersFromInsight(runnersFromInsightArgs)
+                    def runnerName = runnersFromInsight["objectEntries"][0]["name"]
+
+                    // Zmiana ostatniej wersji runnera na status DEPRECATED
+                    Map jiraStatusParams = [
+                        jiraApiToken: "vault_jira_multicloud_user_password",
+                        name: runnerName,
+                        status: InsightRunnerStatus.DEPRECATED
+                    ]
+                    jira.setRunnerStatusInsight(jiraStatusParams)
+
+                    // Rejestrowanie nowego runnera w statusie EKSPLOATOWANY
+                    def runnerDescription = readFile file: "docs/last_update.md"
+                    Map argsRunnerInsight = [
+                        jiraApiToken: "vault_jira_multicloud_user_password",
+                        image: "${TAG}",
+                        description: runnerDescription,
+                        status: InsightRunnerStatus.EXPLOITED
+                    ]
+                    jira.registerRunnerInsight(argsRunnerInsight)
+                }
+            }
+            post {
+                success {
+                    script {
+                        gitlab.updateCommitStatus([
+                            gitlabApiToken: "token",
+                            state: "success"
+                        ])
+                        cleanWs()
