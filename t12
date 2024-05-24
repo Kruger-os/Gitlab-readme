@@ -1,4 +1,59 @@
-       stage('Create jira insight object') {
+def getObjectIdFromInsightObject(Map args) {
+    String userpass = "${USERNAME}:${PASSWORD}"
+    args.jiraApiToken = userpass.bytes.encodeBase64().toString()
+    args.jiraUrl = args.jiraUrl ?: ""
+
+    Map jiraFields = [
+            iql: "Typ = ${args.name}",
+            typeId: 424,
+            resultsPerPage: 25
+    ]
+
+    args.jsonString = JsonOutput.toJson(jiraFields)
+
+    if (env.JIRA_DEBUG) {
+        println args.jsonString
+    }
+
+    JiraCmd jiraCmd = new JiraCmd()
+    def objectInsight = new JsonSlurperClassic().parseText(jiraCmd.getInsightObject(args).run())
+
+    return objectInsight["objectEntries"][0]["id"]
+}
+
+def getRunnersFromInsight(Map args) {
+    withCredentials([usernamePassword(credentialsId: "${args.jiraApiToken}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        String userpass = "${USERNAME}:${PASSWORD}"
+        args.jiraApiToken = userpass.bytes.encodeBase64().toString()
+        args.jiraUrl = args.jiraUrl ?: ""
+        args.objectSchemaId = args.objectSchemaId ?: 11
+        args.objectType = args.objectType ?: ""
+        def status = args.status as InsightRunnerStatus
+
+        Map jiraFields = [
+                iql: "objectSchemaId = ${args.objectSchemaId} " +
+                        "AND Typ = ${args.type} " +
+                        "AND objecttype = ${args.objectType} " +
+                        "AND status = ${status.getValue()}"
+        ]
+
+        args.jiraParams = jiraFields
+
+        if (env.JIRA_DEBUG) {
+            println args.jsonString
+        }
+
+        JiraCmd jiraCmd = new JiraCmd()
+
+        return new JsonSlurperClassic().parseText(jiraCmd.getInsightObject(args).run())
+    }
+
+
+
+
+
+
+stage('Create jira insight object') {
             when {
                 allOf {
                     expression { return GITLAB_OBJECT_KIND == 'push' }
